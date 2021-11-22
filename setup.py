@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="naivenlp",
-    version="0.0.9",
+    version="0.1.0",
     description="Transformers based toolkit for modeling NLP tasks.",
     long_description=long_description,
     long_description_content_type="text/markdown",
