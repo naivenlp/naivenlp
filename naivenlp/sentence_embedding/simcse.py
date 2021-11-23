@@ -68,7 +68,7 @@ class LitUnsupSimCSE(LitAbstractSimCSE):
         return loss
 
 
-class LitSupervisedSimCSE(LitUnsupSimCSE):
+class LitSupervisedSimCSE(LitAbstractSimCSE):
     """Supervised SimCSE with cls pooling strategy"""
 
     def training_step(self, batch, batch_index):
@@ -79,7 +79,6 @@ class LitSupervisedSimCSE(LitUnsupSimCSE):
         loss = self._compute_loss(a_embedding, b_embedding, labels)
         return loss
 
-
     def validation_step(self, batch, batch_index):
         x, _ = batch
         a_embedding = self._step(x["input_ids"], x["segment_ids"], x["attention_mask"])
@@ -89,7 +88,7 @@ class LitSupervisedSimCSE(LitUnsupSimCSE):
         return loss
 
 
-class LitHardNegativeSimCSE(LitUnsupSimCSE):
+class LitHardNegativeSimCSE(LitAbstractSimCSE):
     """Hard negative SimCSE model with cls pooling strategy"""
 
     def _compute_contrastive_loss(self, seq_embedding, pos_embedding, neg_embedding, labels):
@@ -103,7 +102,7 @@ class LitHardNegativeSimCSE(LitUnsupSimCSE):
         # cosine weights: [batch_size, 2 * batch_size]
         pos_weight = torch.zeros_like(pos_cosine)
         neg_weight = torch.eye(seq_embedding.size(0)) * self.hparams.negative_weight
-        cat_weight = torch.cat([pos_weight, neg_weight])
+        cat_weight = torch.cat([pos_weight, neg_weight], dim=1)
         # final logits
         logits = (cat_cosine + cat_weight) / self.hparams.temperature
         return self.loss(logits, labels)
