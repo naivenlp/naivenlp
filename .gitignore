@@ -1,5 +1,6 @@
 .idea
 .vscode
+lightning_logs
 data
 testdata
 models

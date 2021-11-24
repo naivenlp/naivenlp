@@ -1,4 +1,7 @@
 torch
 torchvision
 torchaudio
+torchmetrics
+transformers
+tokenizers
 pytorch-lightning
